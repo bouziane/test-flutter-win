@@ -43,8 +43,12 @@ jobs:
           channel: stable
       - run: flutter build windows --release
 
-      - name: Upload binary artifact
+      - name: Create ZIP of Release folder
+        run: |
+          Compress-Archive -Path build/windows/x64/runner/Release/* -DestinationPath build/windows/x64/runner/Release/release.zip
+        shell: pwsh # Utilisation de PowerShell pour la commande de compression
+
+      - name: Upload ZIP artifact
         uses: actions/upload-artifact@v3
         with:
-          name: test-flutter-binary
-          path: build/windows/x64/runner/Release/test_flutter.exe
+          name: release-archive@
