@@ -42,3 +42,9 @@ jobs:
         with:
           channel: stable
       - run: flutter build windows
+
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-flutter-binary
+          path: build/windows/x64/runner/Release/test_flutter.exe
