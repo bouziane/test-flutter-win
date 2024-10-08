@@ -49,7 +49,7 @@ jobs:
         shell: pwsh # Utilisation de PowerShell pour la commande de compression
 
       - name: Upload ZIP artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: release-archive@
           path: build/windows/x64/runner/Release/release.zip
