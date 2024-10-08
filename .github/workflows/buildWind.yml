@@ -52,3 +52,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: release-archive@
+          path: build/windows/x64/runner/Release/release.zip
