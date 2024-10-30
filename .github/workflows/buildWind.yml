@@ -13,10 +13,10 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v4
 
-      - name: Affiche le répertoire et vérifie la présence de pubspec.yml
+      - name: Affiche le répertoire et vérifie la présence de pubspec.yaml
         run: |
           echo "Chemin actuel : $(Get-Location)"
-          Get-ChildItem -Recurse -Name | Select-String 'pubspec.yml'
+          Get-ChildItem -Recurse -Name | Select-String 'pubspec.yaml'
         shell: pwsh
 
       - name: Set up Flutter
@@ -33,7 +33,7 @@ jobs:
       - name: Extract version from pubspec
         id: version
         run: |
-          $version = (Select-String -Path ./pubspec.yml -Pattern 'version:\s*(\d+\.\d+\.\d+)' | ForEach-Object { $_.Matches.Groups[1].Value }).Trim()
+          $version = (Select-String -Path ./pubspec.yaml -Pattern 'version:\s*(\d+\.\d+\.\d+)' | ForEach-Object { $_.Matches.Groups[1].Value }).Trim()
           echo "::set-output name=app_version::$version"
         shell: pwsh
 
