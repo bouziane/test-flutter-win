@@ -34,26 +34,25 @@ jobs:
         id: version
         run: |
           $version = (Select-String -Path ./pubspec.yaml -Pattern 'version:\s*(\d+\.\d+\.\d+)' | ForEach-Object { $_.Matches.Groups[1].Value }).Trim()
-          echo "::set-output name=app_version::$version"
+          echo "app_version=$version" | Out-File -FilePath $Env:GITHUB_ENV
         shell: pwsh
 
       - name: Define the release name
         id: release_name
         run: |
           $date = Get-Date -Format "dd-MM-yy"
-          $releaseName = "jib-eyes-${{ steps.version.outputs.app_version }}-$date"
-          echo "::set-output name=name::$releaseName"
+          $releaseName = "jib-eyes-${{ env.app_version }}-$date"
+          echo "release_name=$releaseName" | Out-File -FilePath $Env:GITHUB_ENV
         shell: pwsh
 
       - name: Rename and create ZIP of Release folder
         run: |
-          $releaseName = "${{ steps.release_name.outputs.name }}"
-          Rename-Item -Path build/windows/x64/runner/Release -NewName $releaseName
-          Compress-Archive -Path "build/windows/x64/runner/$releaseName/*" -DestinationPath "build/windows/x64/runner/$releaseName.zip"
+          Rename-Item -Path build/windows/x64/runner/Release -NewName $Env:release_name
+          Compress-Archive -Path "build/windows/x64/runner/$Env:release_name/*" -DestinationPath "build/windows/x64/runner/$Env:release_name.zip"
         shell: pwsh
 
       - name: Upload Release ZIP artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ steps.release_name.outputs.name }}
-          path: build/windows/x64/runner/$releaseName.zip
+          name: ${{ env.release_name }}
+          path: build/windows/x64/runner/$Env:release_name.zip
